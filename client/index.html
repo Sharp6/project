@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Felix Recorder</title>
+  </head>
+  <body>
+
+    <div id="loginWrapper">
+        <input type="text" data-bind="value:code" />
+        <button data-bind="click:login">Log in</button>
+    </div>
+
+    <!-- Below is your custom application script -->
+    <script src="https://www.gstatic.com/firebasejs/3.7.0/firebase.js"></script>
+    <script src="lib/knockout-3.4.2.js"></script>
+    <script src="js/fbClient.js"></script>
+    <script src="js/recorder.js"></script>
+    <script src="js/index.js"></script>
+
+  </body>
+</html>

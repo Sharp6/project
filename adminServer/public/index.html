@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script type="text/html" id="card-template">
+      <h3>Card Template</h3>
+      <p>Current card: <span data-bind="text:$data"></span> (hash: <span data-bind="text:$root.codeGenerated"></span>)</p>
+    </script>
+  </head>
+  <body>
+    <div id="container">
+
+      <h2>Next steps</h2>
+
+      <ul>
+        <li>Save card assignments (and hash) to firebase</li>
+      </ul>
+      <h1>Card Config</h1>
+
+      <div id="cardDiv">
+        <input type="text" data-bind="value:cardRead" />
+        <p>Card is assigned:
+          <span data-bind="text:cardIsAssigned"></span>
+        </p>
+        <div data-bind="template: { name: 'card-template', data: cardRead }"></div>
+      </div>
+
+      <div id="contactsDiv">
+        <p>Filter contacts: <input type="checkbox" data-bind="checked: contactFilter" /></p>
+        <p>Search query: <input type="text" data-bind="value:searchQuery" /></p>
+        <ul data-bind="foreach:searchedContacts">
+          <li>
+            <span data-bind="text:name"></span> - <span data-bind="text:card"></span> - <span data-bind="text:hasCardAssigned"></span>
+            <button data-bind="click:assignCard, enable:$parent.cardIsAssignable">Assign card</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <script src="/lib/knockout-3.4.2.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyDTJwtTfx8jIvNG7agggvIWIoIRhnP1flg",
+        authDomain: "dirkje-88fea.firebaseapp.com",
+        databaseURL: "https://dirkje-88fea.firebaseio.com",
+        projectId: "dirkje-88fea",
+        storageBucket: "dirkje-88fea.appspot.com",
+        messagingSenderId: "948454586738"
+      };
+      firebase.initializeApp(config);
+    </script>
+    <script>
+
+      var vm = {
+        contacts: ko.observableArray([]),
+        cardRead: ko.observable('empty'),
+        codeGenerated: ko.observable(''),
+        contactFilter: ko.observable(false),
+        searchQuery: ko.observable('')
+      };
+
+      vm.contactsWithoutCard = ko.computed(() => {
+        return vm.contacts().filter(contact => !contact.card())
+      });
+
+      vm.displayedContacts = ko.computed(() => {
+        return vm.contactFilter() ? vm.contactsWithoutCard() : vm.contacts();
+      });
+
+      vm.searchedContacts = ko.computed(() => {
+        return vm.displayedContacts().filter(contact => contact.name.toLowerCase().indexOf(vm.searchQuery().toLowerCase()) > -1);
+      });
+
+      vm.cardIsAssigned = ko.computed(function() {
+        return vm.contacts().reduce((isAssigned, contact) => {
+          return isAssigned || contact.card() === vm.cardRead();
+        }, false);
+      });
+
+      vm.cardIsAssignable = ko.computed(() => {
+        return vm.cardRead() && vm.cardRead() !== "empty" && !vm.cardIsAssigned();
+      });
+
+      var Contact = function(data, firebaseRef) {
+        this.firebaseRef = firebaseRef;
+
+        this.name = data.Naam;
+        this.card = ko.observable(data.card);
+        this.code = ko.observable(data.code);
+        this.songUploaded = ko.observable(data.songUploaded);
+
+        this.hasCardAssigned = ko.computed(() => {
+          return !!this.card();
+        });
+        this.assignCard = function() {
+          //this.card(vm.cardRead());
+          this.firebaseRef.update({
+            code: vm.codeGenerated(),
+            card: vm.cardRead()
+          })
+            .then(() => { console.log("Firebase update seems fine"); })
+            .catch(err => { console.log("Firebase update error:", err); });
+        }.bind(this);
+      }
+
+      var contactsRef = firebase.database().ref('adressen').on('child_added', data => {
+        vm.contacts.push(new Contact(data.val(), data.ref));
+      });
+
+      firebase.database().ref('adressen').on('child_changed', data => {
+        // find the contact that has been changed
+        var updatedContact = vm.contacts().find(contact => contact.name === data.val().Naam);
+        // update the contact
+        if(updatedContact) {
+          updatedContact.card(data.val().card);
+          updatedContact.code(data.val().code);
+          updatedContact.songUploaded(data.val().songUploaded);
+        } else {
+          console.log("Updated contact not found", data.val());
+        }
+      });
+
+      ko.applyBindings(vm, document.getElementById('container'));
+
+      var socket = io.connect('http://localhost:1804');
+      socket.on('message', function (data) {
+        console.log(data);
+
+        if(data.card) {
+          vm.cardRead(data.card);
+        }
+
+        if(data.generatedCode) {
+          vm.codeGenerated(data.generatedCode);
+        }
+        
+      });
+
+    </script>
+  </body>
+</html>

@@ -11,13 +11,12 @@ firebase.initializeApp(config);
 // Get a reference to the storage service, which is used to create references in your storage bucket
 var storage = firebase.storage();
 var storageRef = storage.ref();
-var ref = storageRef.child("test.ogg");
 
-console.log("Inside fb init");
-
-var firebaseSave = function(file) {
-  console.log("Inside fbSave saver");
-  return ref.put(file).then(function(snapshot) {
-    console.log('Uploaded a blob or file!');
-  });
+var firebaseSave = function(file, name) {
+  var ref = storageRef.child(name + ".ogg");
+  return ref.put(file)
+    .then(function(snapshot) {
+      console.log('Uploaded a blob or file!');
+      return ref.getDownloadURL();
+    });
 }

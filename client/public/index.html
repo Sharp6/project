@@ -12,12 +12,11 @@
     <div id="megaWrapper">
 
       <div id="statusWrapper" class="border" data-bind="visible: statusVm.statusVisible, with: statusVm">
-        Message: <span data-bind="text:message"></span> <span class="handje" data-bind="click:message.bind(undefined,'')"><i class="fa fa-times" aria-hidden="true"></i></span>
+        <span data-bind="text:message"></span> <span class="handje" data-bind="click:message.bind(undefined,'')"><i class="fa fa-times" aria-hidden="true"></i></span>
       </div>
 
       <div id="pageWrapper" data-bind="with:pageVm">
 
-      
         <div id="page1" class="page" data-bind="css: { 'animate-out': !loginVisible(), 'animate-in': loginVisible, initial: false }">
           <img src="img/clover.png" class="clover"/>
           <div id="loginWrapper" data-bind="with:$parent.loginVm">
@@ -29,7 +28,7 @@
           </div>
         </div>
 
-        <div id="page2" class="page initial" data-bind="css: { 'animate-out': !recordVisible(), 'animate-in': recordVisible }">
+        <div id="page2" class="page" data-bind="css: { 'animate-out': !recordVisible(), 'animate-in': recordVisible, 'initial': initial }">
           <img src="img/clover.png" class="clover"/>
           <div id="userWrapper" data-bind="with:$parent.userVm">
             <p>Welkom <span data-bind="text:name"></span>!</p>
@@ -53,7 +52,7 @@
           </div>
         </div>
 
-        <div id="page3" class="page" data-bind="css: { 'animate-out': !finalVisible(), 'animate-in': finalVisible, initial: true }">
+        <div id="page3" class="page" data-bind="css: { 'animate-out': !finalVisible(), 'animate-in': finalVisible, 'initial': initial }">
           <img src="img/clover.png" class="clover"/>
           <div>
             Klaar!

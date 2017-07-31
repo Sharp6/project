@@ -67,7 +67,7 @@ var api = recorder()
   .catch(function(err) {
     console.log("GOT AN ERROR", err);
     statusVm.error(true);
-    statusVm.message(err);
+    statusVm.message("Uw browser lijkt jammer genoeg niet ondersteund te zijn! Download Chrome of Firefox en probeer het nog eens.");
   });
 
 var StatusVm = function(){
@@ -133,17 +133,22 @@ var recordVm = {
   playerVisible: ko.observable(false)
 }
 
-var pageVm = {
-  loginVisible: ko.computed(() => {
+var PageVm = function(){
+  this.initial = ko.observable(true);
+  this.loginVisible = ko.computed(() => {
+    if(!!userVm.name()) {
+      this.initial(false);
+    }
     return !userVm.name() && userVm.isNotReady() && !statusVm.error();
-  }),
-  recordVisible: ko.computed(function() {
+  });
+  this.recordVisible = ko.computed(() => {
     return !!userVm.name() && userVm.isNotReady();
-  }),
-  finalVisible: ko.computed(() => {
+  });
+  this.finalVisible = ko.computed(() => {
     return !!userVm.isReady();
-  })
+  });
 }
+var pageVm = new PageVm();
 
 ko.applyBindings({
   loginVm: loginVm,

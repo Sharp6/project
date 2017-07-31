@@ -24,7 +24,8 @@ div#megaWrapper {
 }
 
 .initial {
-    opacity: 0;
+    /*opacity: 0;*/
+    display: none;
 }
 
 div#pageWrapper {
@@ -106,7 +107,7 @@ div.animate-out {
 	-webkit-animation: out 600ms ease-in-out forwards;
 	-moz-animation: out 600ms ease-in-out forwards;
 	-o-animation: out 600ms ease-in-out forwards;
-	 animation: out 600ms ease-in-out forwards;
+  animation: out 600ms ease-in-out forwards;  
 }
 
 div.animate-in {
@@ -121,7 +122,7 @@ div.animate-in {
   0%{
     transform: translateX(0px);
     display: block;
-    /*opacity: 1;*/
+    opacity: 1;
 	}
   100%{
     transform: translateX(1200px);

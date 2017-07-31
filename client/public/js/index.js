@@ -1,8 +1,5 @@
 function loadBlobInDom(blob) {
-  //var audio = document.querySelector('.audio');
   var audioURL = window.URL.createObjectURL(blob);
-  //audio.src = audioURL;
-
   return loadAudioInDom(audioURL);
 }
 
@@ -90,12 +87,6 @@ var UserVm = function() {
   this.card = ko.observable();
   this.name = ko.observable();
   this.firebaseUserRef = ko.observable();
-  this.userVisible = ko.computed(() => {
-    return !!this.name() && this.isNotReady();
-  });
-  this.userInvisible = ko.computed(() => {
-    return !this.name() || this.isReady();
-  });
 }
 var userVm = new UserVm();
 
@@ -135,33 +126,24 @@ var LoginVm = function() {
     }
     
   }.bind(this);
-  this.logoutVisible = ko.computed(() => {
-    return userVm.userVisible();
-  });
-  this.loginVisible = ko.computed(() => {
-    return !userVm.userVisible() && userVm.isNotReady() && !statusVm.error();
-  })
-  this.loginInvisible = ko.computed(() => {
-    return !!userVm.userVisible() || userVm.isReady() || statusVm.error();
-  })
 } 
 var loginVm = new LoginVm();
 
 var recordVm = {
-  recordVisible: ko.computed(function() {
-    return !!userVm.userVisible();
-  }),
   playerVisible: ko.observable(false)
 }
 
-
-
-/*
-ko.applyBindings(loginVm, document.getElementById('loginWrapper'));
-ko.applyBindings(userVm, document.getElementById('userWrapper'));
-ko.applyBindings(recordVm, document.getElementById('recordWrapper'));
-ko.applyBindings(statusVm, document.getElementById('statusWrapper'));
-*/
+var pageVm = {
+  loginVisible: ko.computed(() => {
+    return !userVm.name() && userVm.isNotReady() && !statusVm.error();
+  }),
+  recordVisible: ko.computed(function() {
+    return !!userVm.name() && userVm.isNotReady();
+  }),
+  finalVisible: ko.computed(() => {
+    return !!userVm.isReady();
+  })
+}
 
 ko.applyBindings({
   loginVm: loginVm,

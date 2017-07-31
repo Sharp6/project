@@ -11,14 +11,16 @@
   <body>
     <div id="megaWrapper">
 
-      <div id="statusWrapper" data-bind="visible: statusVm.statusVisible, with: statusVm">
-        Message: <span data-bind="text:message"></span> <span data-bind="click:message.bind(undefined,'')"><i class="fa fa-times" aria-hidden="true"></i></span>
+      <div id="statusWrapper" class="border" data-bind="visible: statusVm.statusVisible, with: statusVm">
+        Message: <span data-bind="text:message"></span> <span class="handje" data-bind="click:message.bind(undefined,'')"><i class="fa fa-times" aria-hidden="true"></i></span>
       </div>
 
-      <div id="pageWrapper">
+      <div id="pageWrapper" data-bind="with:pageVm">
 
-        <div id="page1" class="page" data-bind="css: { 'animate-out': loginVm.loginInvisible, 'animate-in': loginVm.loginVisible, initial: false }">
-          <div id="loginWrapper" data-bind="with:loginVm">
+      
+        <div id="page1" class="page" data-bind="css: { 'animate-out': !loginVisible(), 'animate-in': loginVisible, initial: false }">
+          <img src="img/clover.png" class="clover"/>
+          <div id="loginWrapper" data-bind="with:$parent.loginVm">
             <p>Welkom! Vul hieronder de code in die je ontvangen hebt. Klik daarna op Log in.</p>
             <input type="text" data-bind="value:code" />
             <div class="actionButton">
@@ -27,14 +29,15 @@
           </div>
         </div>
 
-        <div id="page2" class="page initial" data-bind="css: { 'animate-out': userVm.userInvisible, 'animate-in': userVm.userVisible }">
-          <div id="userWrapper" data-bind="with:userVm">
+        <div id="page2" class="page initial" data-bind="css: { 'animate-out': !recordVisible(), 'animate-in': recordVisible }">
+          <img src="img/clover.png" class="clover"/>
+          <div id="userWrapper" data-bind="with:$parent.userVm">
             <p>Welkom <span data-bind="text:name"></span>!</p>
             <p>Klik hieronder op record om te beginnen opnemen. Klik op stop als je klaar bent. Daarna verschijnt een speler waarin je de opname kunt herbeluisteren. Als je deze goed vindt, klik je op "klaar!". Als je opnieuw wil opnemen, kan je nog eens op record klikken.</p>
             <p>Veel plezier!</p>
           </div>
 
-          <div id="recordWrapper" data-bind="with:recordVm">
+          <div id="recordWrapper" data-bind="with:$parent.recordVm">
               <div id="buttons">
                 <div class="record">Record</div>
                 <div class="stop">Stop</div>
@@ -46,12 +49,15 @@
           </div>
 
           <div class="actionButton">
-            <div data-bind="click:userVm.isReady.bind(null,true)">Klaar <i class="fa fa-chevron-right" aria-hidden="true"></i></div>
+            <div data-bind="click:$parent.userVm.isReady.bind(null,true)">Klaar <i class="fa fa-chevron-right" aria-hidden="true"></i></div>
           </div>
         </div>
 
-        <div id="page3" class="page" data-bind="css: { 'animate-out': userVm.isNotReady, 'animate-in': userVm.isReady, initial: true }">
-          Klaar!
+        <div id="page3" class="page" data-bind="css: { 'animate-out': !finalVisible(), 'animate-in': finalVisible, initial: true }">
+          <img src="img/clover.png" class="clover"/>
+          <div>
+            Klaar!
+          </div>
         </div>
 
       </div>

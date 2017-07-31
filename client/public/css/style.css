@@ -6,6 +6,10 @@ html {
   font-family: 'Raleway', sans-serif;
 }
 
+img.clover {
+  max-width: 25px;
+}
+
 div.border {
     border: 1px solid #000;
 }
@@ -35,19 +39,25 @@ div.page {
   padding-top: 40px;
 }
 
+.handje {
+  cursor: pointer;
+}
+
 div.actionButton div {
   padding: 10px 20px;
   border-radius: 3px;
-  background: #090;
+  background: #26963c;
   color: white;
   text-transform: uppercase;
   letter-spacing: 1px;
   display: inline-block;
   cursor: pointer;
-  
-  margin-top: 40px;
+  margin: 10px;
 }
 
+div.clip {
+  margin: 10px;
+}
 
 div.record {
   padding: 10px 20px;
@@ -87,7 +97,7 @@ input[type="text"] {
 }
   
 input[type="text"]:focus {
-  border-color: #090;
+  border-color: #26963c;
 }
 
 /* Animations */

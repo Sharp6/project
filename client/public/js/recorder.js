@@ -1,18 +1,23 @@
 function checkGetUserMedia() {
-  window.navigator.getUserMedia = ( navigator.getUserMedia ||
+  try {
+    window.navigator.getUserMedia = ( navigator.getUserMedia ||
                          navigator.webkitGetUserMedia ||
                          navigator.mozGetUserMedia ||
                          navigator.msGetUserMedia);
-  if (window.navigator.getUserMedia && MediaRecorder) {
-    return Promise.resolve();
-  } else {
-    return Promise.reject('getUserMedia not supported on your browser.');
+    if (window.navigator.getUserMedia && MediaRecorder) {
+      return Promise.resolve();
+    } else {
+      return Promise.reject('getUserMedia not supported on your browser.');
+    }
+  } catch(e) {
+    return Promise.reject("MediaRecorder not supported.");
   }
+  
 }
 
 function getAudioStream() {
   // navigator is global
-  return navigator.mediaDevices.getUserMedia({ audio: true })
+  return navigator.mediaDevices.getUserMedia({ audio: true, video: false })
 }
 
 function getStream() {
@@ -21,7 +26,7 @@ function getStream() {
 }
 
 function getMediaRecorder(stream) {
-    var mediaRecorder = new MediaRecorder(stream);
+    var mediaRecorder = new MediaRecorder(stream); //, {mimeType: "audio/ogg;codecs=opus"});
     var chunks = ["hello"];
 
     mediaRecorder.onstart = function(e) {
@@ -38,7 +43,7 @@ function getMediaRecorder(stream) {
       return new Promise((resolve, reject) => {
         mediaRecorder.onstop = function(e) {
           console.log("Stop is triggered.");
-          var blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+          var blob = new Blob(chunks, { 'type' : 'audio/webm' });
           resolve(blob);
         };
 

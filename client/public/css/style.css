@@ -1,0 +1,134 @@
+html {
+  min-height: 100%;
+  max-width: 100%;
+
+  overflow: hidden;
+  font-family: 'Raleway', sans-serif;
+}
+
+div.border {
+    border: 1px solid #000;
+}
+
+div#statusWrapper {
+  text-align: center;
+}
+
+div#megaWrapper {
+  margin: 10px auto;
+  max-width: 800px;
+}
+
+.initial {
+    opacity: 0;
+}
+
+div#pageWrapper {
+  position: relative;
+}
+
+div.page {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  text-align:center;
+  padding-top: 40px;
+}
+
+div.actionButton div {
+  padding: 10px 20px;
+  border-radius: 3px;
+  background: #090;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: inline-block;
+  cursor: pointer;
+  
+  margin-top: 40px;
+}
+
+
+div.record {
+  padding: 10px 20px;
+  border-radius: 3px;
+  background: #f00;
+  color: white;
+  text-transform: uppercase;
+  /*letter-spacing: 1px;*/
+  display: inline-block;
+  cursor: pointer;
+  
+  margin: 10px 0;
+}
+
+div.stop {
+  padding: 10px 20px;
+  border-radius: 3px;
+  background: #ccc;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: inline-block;
+  cursor: pointer;
+  
+  margin: 10px 0;
+}
+
+input[type="text"] {
+  padding: 10px 20px;
+  border: 1px solid #999;
+  border-radius: 3px;
+  display: block;
+  max-width: 300px;
+  margin: 20px auto;
+  box-sizing: border-box;
+  outline: none;
+}
+  
+input[type="text"]:focus {
+  border-color: #090;
+}
+
+/* Animations */
+
+div.animate-out {
+	-webkit-animation: out 600ms ease-in-out forwards;
+	-moz-animation: out 600ms ease-in-out forwards;
+	-o-animation: out 600ms ease-in-out forwards;
+	 animation: out 600ms ease-in-out forwards;
+}
+
+div.animate-in {
+  -webkit-animation: in 600ms ease-in-out forwards;
+	-moz-animation: in 600ms ease-in-out forwards;
+	-o-animation: in 600ms ease-in-out forwards;
+	animation: in 600ms ease-in-out forwards;
+	display: block;
+}
+
+@keyframes out {
+  0%{
+    transform: translateX(0px);
+    display: block;
+    /*opacity: 1;*/
+	}
+  100%{
+    transform: translateX(1200px);
+    opacity: 0;
+	}
+}
+
+@keyframes in {
+  0%{
+    opacity: 0;
+    /*transform: rotateX(-90deg);*/
+    transform: translateX(-1200px);
+	}
+  100%{
+    opacity: 1;
+    /*transform: rotateX(0deg);*/
+    transform: translateX(0px);
+	}
+}
+

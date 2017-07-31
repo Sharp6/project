@@ -1,14 +1,15 @@
 function loadBlobInDom(blob) {
-  var audio = document.querySelector('.audio');
+  //var audio = document.querySelector('.audio');
   var audioURL = window.URL.createObjectURL(blob);
-  audio.src = audioURL;
+  //audio.src = audioURL;
 
-  return Promise.resolve();
+  return loadAudioInDom(audioURL);
 }
 
 function loadAudioInDom(url) {
   var audio = document.querySelector('.audio');
   audio.src = url;
+  recordVm.playerVisible(true);
 
   return Promise.resolve();
 }
@@ -26,15 +27,30 @@ var api = recorder()
 
     record.onclick = function() {
       console.log('recorder', api);
-      api.start();
-      record.style.background = "red";
+      try {
+        api.start();
+      } catch(e) {
+        statusVm.message(e);
+      }
+      
+      record.style.background = "#ccc";
       record.style.color = "black";
+
+      stop.style.background = "red";
+      stop.style.color = "white";
     };
 
     stop.onclick = function() {
-      api.stop();
+      try {
+        api.stop();
+      } catch(e) {
+        statusVm.message(e);
+      }
+      
       record.style.background = "";
       record.style.color = "";
+      stop.style.background = "";
+      stop.style.color = "";
 
       api.getBlob()
         .then(handleNewBlob)
@@ -45,7 +61,10 @@ var api = recorder()
         .then(() => {
           statusVm.message("Uw opname werd succesvol geüpload!");
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          statusVm.message(err);
+          console.log(err)
+        });
     };
   })
   .catch(function(err) {
@@ -54,15 +73,28 @@ var api = recorder()
     statusVm.message(err);
   });
 
+var StatusVm = function(){
+  this.message = ko.observable();
+  this.error = ko.observable(false);
+  this.statusVisible = ko.computed(() => {
+    return !!this.message();
+  });
+};
+var statusVm = new StatusVm();
+
 var UserVm = function() {
+  this.isReady = ko.observable(false);
+  this.isNotReady = ko.computed(() => {
+    return !this.isReady();
+  });
   this.card = ko.observable();
   this.name = ko.observable();
   this.firebaseUserRef = ko.observable();
   this.userVisible = ko.computed(() => {
-    return !!this.name();
+    return !!this.name() && this.isNotReady();
   });
   this.userInvisible = ko.computed(() => {
-    return !this.name();
+    return !this.name() || this.isReady();
   });
 }
 var userVm = new UserVm();
@@ -70,34 +102,47 @@ var userVm = new UserVm();
 var LoginVm = function() {
   this.code = ko.observable();
   this.login = function() {
-    // dirty tricks... 
-    firebase.database().ref('adressen')
-      .orderByChild("code")
-      .equalTo(this.code())
-      .once("value", snapshot => {
-        var fbUser = snapshot.val()[Object.keys(snapshot.val())[0]];
-        userVm.card(fbUser.card);
-        userVm.name(fbUser.Naam);
-        userVm.firebaseUserRef(firebase.database().ref('adressen').child(Object.keys(snapshot.val())[0]));
+    if(!!this.code()) {
+      // dirty tricks... 
+      firebase
+        .database()
+        .ref('adressen')
+        .orderByChild("code")
+        .equalTo(this.code())
+        .once("value")
+        .then(snapshot => {
+          console.log(snapshot.val());
+          if(!snapshot.val()) {
+            return Promise.reject("Invalid login");
+          } else {
+            statusVm.message("");
+          }
+          var fbUser = snapshot.val()[Object.keys(snapshot.val())[0]];
+          userVm.card(fbUser.card);
+          userVm.name(fbUser.Naam);
+          userVm.firebaseUserRef(firebase.database().ref('adressen').child(Object.keys(snapshot.val())[0]));
 
-        if(!!fbUser.songUrl) {
-          loadAudioInDom(fbUser.songUrl);
-        }
-        statusVm.message("Welcome player one!");
-      })
-      .catch(err => {
-        console.log("Firebase error:", err);
-        statusVm.message("Er ging iets mis met Firebase login. Reload the page, try again!");
-      });
+          if(!!fbUser.songUrl) {
+            loadAudioInDom(fbUser.songUrl);
+          }
+        })
+        .catch(err => {
+          console.log("Firebase error:", err);
+          statusVm.message("Met deze code kan je niet inloggen. Probeer opnieuw!");
+        });
+    } else {
+      statusVm.message("Vul een code in.");
+    }
+    
   }.bind(this);
   this.logoutVisible = ko.computed(() => {
     return userVm.userVisible();
   });
   this.loginVisible = ko.computed(() => {
-    return !userVm.userVisible();
+    return !userVm.userVisible() && userVm.isNotReady() && !statusVm.error();
   })
   this.loginInvisible = ko.computed(() => {
-    return !!userVm.userVisible();
+    return !!userVm.userVisible() || userVm.isReady() || statusVm.error();
   })
 } 
 var loginVm = new LoginVm();
@@ -105,14 +150,11 @@ var loginVm = new LoginVm();
 var recordVm = {
   recordVisible: ko.computed(function() {
     return !!userVm.userVisible();
-  })
+  }),
+  playerVisible: ko.observable(false)
 }
 
-var statusVm = {
-  message: ko.observable(),
-  error: ko.observable(false),
-  statusVisible: ko.observable(true)
-};
+
 
 /*
 ko.applyBindings(loginVm, document.getElementById('loginWrapper'));

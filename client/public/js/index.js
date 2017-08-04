@@ -139,13 +139,16 @@ var PageVm = function(){
     if(!!userVm.name()) {
       this.initial(false);
     }
-    return !userVm.name() && userVm.isNotReady() && !statusVm.error();
+    return !userVm.name() && userVm.isNotReady();
   });
   this.recordVisible = ko.computed(() => {
-    return !!userVm.name() && userVm.isNotReady();
+    return !!userVm.name() && userVm.isNotReady() && !statusVm.error();
   });
   this.finalVisible = ko.computed(() => {
-    return !!userVm.isReady();
+    return !!userVm.isReady() && !statusVm.error();
+  });
+  this.errorVisible = ko.computed(() => {
+    return statusVm.error() && !!userVm.name();
   });
 }
 var pageVm = new PageVm();
@@ -155,4 +158,21 @@ ko.applyBindings({
   userVm: userVm,
   recordVm: recordVm,
   statusVm: statusVm
+});
+
+// Add file upload. This is done outside KO because KO complicates this, and I currently don't see any downside to this other than it being dirty
+var fileButton = document.getElementById('fileButton');
+fileButton.addEventListener('change', e => {
+  firebaseSave(e.target.files[0], userVm.card())
+  // COPY PASTED CODE, AAAAAARGH
+    .then((url) => {
+          return userVm.firebaseUserRef().update({ songUrl: url, songUploaded: true });
+        })
+        .then(() => {
+          statusVm.message("Uw opname werd succesvol geüpload!");
+        })
+        .catch(err => {
+          statusVm.message(err);
+          console.log(err)
+        });
 });

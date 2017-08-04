@@ -17,6 +17,14 @@
 
       <div id="pageWrapper" data-bind="with:pageVm">
 
+        <div id="errorPage" class="page" data-bind="css: { 'animate-out': !errorVisible(), 'animate-in': errorVisible(), initial: false }">
+          <p>Er lijkt een probleem te zijn met de webapp. Jammer! Het opnemen van de microfoon via de browser werkt momenteel alleen in Chrome en Firefox. Internet Explorer, Edge, en Safari ondersteunen dit jammer genoeg nog niet.</p>
+          <p>Als eerste remedie kan je dus proberen om de Chrome browser te proberen. Als je deze nog niet hebt, kan je hem downloaden op chrome.download. Probeer het dan nog eens.</p>
+          <p>Als tweede remedie kan je een audio-bestand opnemen op je computer zelf (voor windows start je hiervoor de geluidsrecorder op, voor mac doe je dit via quicktime), en upload je het bestand hieronder:
+            <input type="file" value="upload" id="fileButton" />
+          </p>
+        </div>
+
         <div id="page1" class="page" data-bind="css: { 'animate-out': !loginVisible(), 'animate-in': loginVisible, initial: false }">
           <img src="img/clover.png" class="clover"/>
           <div id="loginWrapper" data-bind="with:$parent.loginVm">

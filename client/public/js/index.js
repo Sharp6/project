@@ -53,7 +53,7 @@ var api = recorder()
         .then(handleNewBlob)
         .then((results) => {
           var url = results[1];
-          return userVm.firebaseUserRef().update({ songUrl: url, songUploaded: true });
+          return userVm.firebaseUserRef().update({ songUrl: url, songUploaded: true, songShouldBeDownloaded: true });
         })
         .then(() => {
           statusVm.message("Uw opname werd succesvol geüpload!");
@@ -102,7 +102,7 @@ var LoginVm = function() {
         .equalTo(this.code())
         .once("value")
         .then(snapshot => {
-          console.log(snapshot.val());
+          console.log(snapshot.val(), Object.keys(snapshot.val())[0]);
           if(!snapshot.val()) {
             return Promise.reject("Invalid login");
           } else {

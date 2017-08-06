@@ -15,8 +15,7 @@ var SongDownloaderWorker = function(sender) {
 
     var db = admin.database();
     var ref = db.ref("adressen");
-    ref.on("child_added", handleRemoteFile);
-    ref.on("child_changed", handleRemoteFile);
+    
 
     var handleRemoteFile = function(contact) {
         if(!contact.val().songUploaded) {
@@ -59,6 +58,9 @@ var SongDownloaderWorker = function(sender) {
         }
         return download(url, "/home/pi/downloadedFiles");    
     }
+
+    ref.on("child_added", handleRemoteFile);
+    ref.on("child_changed", handleRemoteFile);
 }
 
 module.exports = SongDownloaderWorker;

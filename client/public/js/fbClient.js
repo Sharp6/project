@@ -13,7 +13,7 @@ var storage = firebase.storage();
 var storageRef = storage.ref();
 
 var firebaseSave = function(file, name) {
-  var ref = storageRef.child(name + ".ogg");
+  var ref = storageRef.child(name);
   return ref.put(file)
     .then(function(snapshot) {
       console.log('Uploaded a blob or file!');

@@ -2,7 +2,7 @@ var Listener = function(amqp, worker) {
     this.amqp = amqp;
     this.worker = worker;
 
-    this.amqp.connect('amqp://localhost', (err, conn) => {
+    this.amqp.connect('amqp://192.168.1.129', (err, conn) => {
         conn.createChannel((err, ch) => {
             var ex = 'jukeboxExchange';
             ch.assertExchange(ex, 'topic', {durable: false});

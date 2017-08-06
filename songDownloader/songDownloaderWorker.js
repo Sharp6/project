@@ -2,7 +2,7 @@ var admin = require("firebase-admin");
 //var path = require('path');
 //var fs = require('fs');
 var download = require('download');
-var serviceAccount = require("/Users/philiphuysmans/Workspace/projectf/sandbox/fbupdater/dirkje-88fea-firebase-adminsdk-blp93-126124d325.json");
+var serviceAccount = require(__dirname + "/dirkje-88fea-firebase-adminsdk-blp93-126124d325.json");
 
 var SongDownloaderWorker = function(sender) {
 

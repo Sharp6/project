@@ -28,7 +28,7 @@ function getStream() {
 function getMediaRecorder(stream) {
     var mediaRecorder = new MediaRecorder(stream); //, {mimeType: "audio/ogg;codecs=opus"});
     var chunks = ["hello"];
-    var encoder = new OggVorbisEncoder();
+    //var encoder = new OggVorbisEncoder();
 
     mediaRecorder.onstart = function(e) {
       chunks = [];
@@ -37,7 +37,7 @@ function getMediaRecorder(stream) {
     mediaRecorder.ondataavailable = function(e) {
       console.log("Data is available!", e.data);
       chunks.push(e.data);
-      encoder.encode(e.data);
+      //encoder.encode(e.data);
       //console.log(chunks);
     };
 
@@ -46,9 +46,9 @@ function getMediaRecorder(stream) {
         mediaRecorder.onstop = function(e) {
           console.log("Stop is triggered.");
           var blob = new Blob(chunks, { 'type' : 'audio/webm' });
-          var oggBlob = encoder.finish();
+          //var oggBlob = encoder.finish();
 
-          resolve(oggBlob);
+          resolve(blob);
         };
 
         /*

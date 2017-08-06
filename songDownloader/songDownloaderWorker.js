@@ -57,10 +57,8 @@ var SongDownloaderWorker = function(sender) {
         if(!url) {
             return Promise.reject("No valid URL found for " + contact.val().Naam);
         }
-        return download(url, "files");    
+        return download(url, "/home/pi/downloadedFiles");    
     }
-
-
 }
 
 module.exports = SongDownloaderWorker;

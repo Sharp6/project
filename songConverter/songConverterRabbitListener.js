@@ -17,7 +17,7 @@ var Listener = function(amqp, worker) {
                 if(err) {
                     console.log(err);
                 }
-                ch.bindQueue(q.queue, ex, 'songDownloaded');
+                ch.bindQueue(q.queue, ex, 'downloadComplete');
                 ch.consume(q.queue, (msg) => {
                     console.log(" [x] %s:'%s'", msg.fields.routingKey, msg.content.toString());
                     this.worker.convertSong(msg.content.toString());

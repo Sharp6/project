@@ -5,13 +5,15 @@ const exec = require('child_process').exec;
 var SongPlayerWorker = function() {
 
     this.play = function(song) {
-        exec('aplay /home/pi/convertedFiles/' + song + ".wav", (e, stdout, stderr) => {
-            if (e instanceof Error) {
-                console.error(e);
-            }
-            console.log('stdout ', stdout);
-            console.log('stderr ', stderr);
-        });
+        if(song && song !== "empty") {
+            exec('aplay /home/pi/convertedFiles/' + song + ".wav", (e, stdout, stderr) => {
+                if (e instanceof Error) {
+                    console.error(e);
+                }
+                console.log('stdout ', stdout);
+                console.log('stderr ', stderr);
+            });
+        }
     }
 
     this.handleCommand = function(command) {

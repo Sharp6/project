@@ -6,9 +6,11 @@ var path = require('path');
 var io = require('socket.io')(server);
 var amqp = require('amqplib/callback_api');
 
-server.listen(1804);
-
 app.use(express.static(path.join(__dirname, "public")));
+
+server.listen(1804, function(){
+  console.log("Listening on felix-adminserver on port 1804");
+});
 
 io.on('connection', function (socket) {
   socket.emit('message', { system: 'Connected to socket.io server' });

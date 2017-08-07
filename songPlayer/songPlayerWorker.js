@@ -6,12 +6,17 @@ var SongPlayerWorker = function() {
 
     this.play = function(song) {
         if(song && song !== "empty") {
-            exec('aplay /home/pi/convertedFiles/' + song + ".wav", (e, stdout, stderr) => {
-                if (e instanceof Error) {
-                    console.error(e);
+            fs.access('/home/pi/convertedFiles/' + song + ".wav", fs.constants.R_OK, (err) => {
+                if(err) {
+                    return;
                 }
-                console.log('stdout ', stdout);
-                console.log('stderr ', stderr);
+                exec('aplay /home/pi/convertedFiles/' + song + ".wav", (e, stdout, stderr) => {
+                    if (e instanceof Error) {
+                        console.error(e);
+                    }
+                    console.log('stdout ', stdout);
+                    console.log('stderr ', stderr);
+                });
             });
         }
     }
@@ -36,7 +41,7 @@ var SongPlayerWorker = function() {
                 console.log('stderr ', stderr);
             });
         }
-    }    
+    }
 }
 
 module.exports = SongPlayerWorker;

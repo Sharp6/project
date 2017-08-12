@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>Recorder</title>
+    <title>Felix Huysmans</title>
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
     <link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
@@ -11,24 +11,52 @@
   <body>
     <div id="megaWrapper">
 
-      <div id="statusWrapper" class="border" data-bind="visible: statusVm.statusVisible, with: statusVm">
-        <span data-bind="text:message"></span> <span class="handje" data-bind="click:message.bind(undefined,'')"><i class="fa fa-times" aria-hidden="true"></i></span>
+      <div id="statusWrapper" data-bind="css: { 'is-active': statusVm.statusVisible() }, with: statusVm">
+        <div class="icon"><i class="fa fa-bell" aria-hidden="true"></i></div>
+        <div class="statusMessage">
+          <span data-bind="text:message"></span> 
+          <span class="handje" data-bind="click:message.bind(undefined,'')"><i class="fa fa-times" aria-hidden="true"></i></span>
+        </div>
+      </div>
+
+      
+
+      <div id="menu" data-bind="with:pageVm">
+        <img src="img/clover.png" class="clover"/>
+        <div class="clear"></div>
+        <input type="radio" name="slideItem" id="slide-item-1" class="slide-toggle" value="imgPage" data-bind="checked:selectedPage" />
+        <label for="slide-item-1"><i class="fa fa-camera" aria-hidden="true"></i><span>Foto's</span></label>
+
+        <input type="radio" name="slideItem" id="slide-item-2" class="slide-toggle" value="giftPage" data-bind="checked:selectedPage" />
+        <label for="slide-item-2"><i class="fa fa-gift" aria-hidden="true"></i><span>Cadeautip</span></label>
+
+        <input type="radio" name="slideItem" id="slide-item-3" class="slide-toggle" value="page1" data-bind="checked:selectedPage" />
+        <label for="slide-item-3"><i class="fa fa-microphone" aria-hidden="true"></i><span>Radio Felix</span></label>
+
+        <div class="clear"></div>
+
       </div>
 
       <div id="pageWrapper" data-bind="with:pageVm">
 
-        <div id="errorPage" class="page" data-bind="css: { 'animate-out': !errorVisible(), 'animate-in': errorVisible(), initial: false }">
-          <p>Er lijkt een probleem te zijn met de webapp. Jammer! Het opnemen van de microfoon via de browser werkt momenteel alleen in Chrome en Firefox. Internet Explorer, Edge, en Safari ondersteunen dit jammer genoeg nog niet.</p>
+        <div id="errorPage" class="page" data-bind="css: { 'animate-out': previousPage() === 'errorPage', 'animate-in': currentPage() === 'errorPage' }">
+          
+          <p>Er lijkt een probleem te zijn met de webapp. Jammer! Het opnemen van de microfoon via de browser werkt momenteel alleen in <span class="browserSupported">Chrome</span> en <span class="browserSupported">Firefox</span>. <span class="browserNotSupported">Internet Explorer</span>, <span class="browserNotSupported">Edge</span>, en <span class="browserNotSupported">Safari</span> ondersteunen dit jammer genoeg nog niet.</p>
           <p>Als eerste remedie kan je dus proberen om de Chrome browser te proberen. Als je deze nog niet hebt, kan je hem downloaden op chrome.download. Probeer het dan nog eens.</p>
           <p>Als tweede remedie kan je een audio-bestand opnemen op je computer zelf (voor windows start je hiervoor de geluidsrecorder op, voor mac doe je dit via quicktime), en upload je het bestand hieronder:
             <input type="file" value="upload" id="fileButton" />
           </p>
         </div>
 
-        <div id="page1" class="page" data-bind="css: { 'animate-out': !loginVisible(), 'animate-in': loginVisible, initial: false }">
-          <img src="img/clover.png" class="clover"/>
+        <div id="page1" class="page" data-bind="css: { 'animate-out': previousPage() === 'page1', 'animate-in': currentPage() === 'page1' }">
           <div id="loginWrapper" data-bind="with:$parent.loginVm">
-            <p>Welkom! Vul hieronder de code in die je ontvangen hebt. Klik daarna op Log in.</p>
+            <h3>Welkom bij Radio Felix!</h3>
+            <p>
+              Aangezien Felix de wenskaarten die wij ontvangen naar aanleiding van zijn geboorte nog niet zelf kan lezen, dachten we dat het leuk zou zijn om een muziekspeler te maken die alle wensen kan afspelen. Daarvoor hebben we natuurlijk jouw medewerking nodig. Als je graag een persoonlijke wens inspreekt, inzingt of speelt voor Felix, volg dan de stappen op dit scherm. Uiteraard volledig vrijblijvend voor wie hier zin in heeft!
+            </p>
+            <p class="instructies">
+            Neem het aparte kaartje dat in de enveloppe van het geboortekaartje zit. Vul hieronder de persoonlijke code in die je op het kaartje vindt. Klik op "log in" en controleer of jouw naam op het scherm verschijnt.
+            </p>
             <input type="text" data-bind="value:code" />
             <div class="actionButton">
               <div data-bind="click:login">Log in <i class="fa fa-chevron-right" aria-hidden="true"></i></div>
@@ -36,12 +64,21 @@
           </div>
         </div>
 
-        <div id="page2" class="page" data-bind="css: { 'animate-out': !recordVisible(), 'animate-in': recordVisible, 'initial': initial }">
-          <img src="img/clover.png" class="clover"/>
+        <div id="page2" class="page" data-bind="css: { 'animate-out': previousPage() === 'page2', 'animate-in': currentPage() === 'page2' }">
           <div id="userWrapper" data-bind="with:$parent.userVm">
-            <p>Welkom <span data-bind="text:name"></span>!</p>
-            <p>Klik hieronder op record om te beginnen opnemen. Klik op stop als je klaar bent. Daarna verschijnt een speler waarin je de opname kunt herbeluisteren. Als je deze goed vindt, klik je op "klaar!". Als je opnieuw wil opnemen, kan je nog eens op record klikken.</p>
-            <p>Veel plezier!</p>
+            <h3>Welkom bij Radio Felix, <span data-bind="text:name"></span>!</h3>
+            <p class="instructions">
+            Nu ben je klaar om je eigen wens op te nemen. Klik op de knop “record” hieronder. Spreek, speel of zing dan je persoonlijke wens in. Klik op de knop "stop" als je klaar bent met opnemen.
+            </p>
+            <p class="instructions">
+            Klik op “play” om je eigen opgenomen wens te beluisteren. 
+            </p>
+            <p class="instructions">
+            Als je tevreden bent met je wens, klik je op "klaar". Zoniet, klik dan opnieuw op “record” en neem een nieuwe wens op.
+            </p>
+
+            <p>
+
           </div>
 
           <div id="recordWrapper" data-bind="with:$parent.recordVm">
@@ -60,10 +97,43 @@
           </div>
         </div>
 
-        <div id="page3" class="page" data-bind="css: { 'animate-out': !finalVisible(), 'animate-in': finalVisible, 'initial': initial }">
-          <img src="img/clover.png" class="clover"/>
+        <div id="page3" class="page" data-bind="css: { 'animate-out': previousPage() === 'page3', 'animate-in': currentPage() === 'page3' }">
           <div>
-            Klaar!
+            <h3>Felix bedankt u!</h3>
+            <p class="instructions">              
+            Op het aparte kaartje vind je op de achterkant ook een sticker waar een chip aanhangt. Haal de sticker van het kaartje en kleef die op je eigen wenskaart. Stuur je wenskaart naar ons op met de post, of breng hem mee als je op babybezoek komt.
+            Wij leggen jouw kaart met sticker op Felix’ muziekspeler bij ons thuis, en dan kan Felix jouw persoonlijke wens beluisteren!
+            </p>
+
+            <p class="instructions">
+            Alvast bedankt voor de lieve wensen!
+            </p>
+          </div>
+        </div>
+
+        <div id="imgPage" class="page" data-bind="css: { 'animate-out': previousPage() === 'imgPage', 'animate-in': currentPage() === 'imgPage' }">
+          <div>
+            Ik ben dit imgPage
+          </div>
+        </div>
+
+        <div id="giftPage" class="page" data-bind="css: { 'animate-out': previousPage() === 'giftPage', 'animate-in': currentPage() === 'giftPage' }">
+          <div>
+            <h3>Vrijblijvende cadeautip</h3>
+
+            <p>
+            Aangezien wij alle nodige babyspulletjes en –kleertjes al hebben, hebben we geen geboortelijst meer gelegd. Als je dat wenst, kan je een bijdrage storten op de babyrekening BE13 7331 5900 3339. 
+            </p>
+
+            <p>
+            Wie toch graag een cadeautje koopt, kan ook altijd terecht bij Play Kids Shop, <a href="https://www.google.be/maps/place/PLAY(+Rewind+Design+bvba)/@51.2157074,4.3927327,17z/data=!4m13!1m7!3m6!1s0x47c3f6f3a4d490e1:0x3f5f056bd1c108ef!2sKloosterstraat+63,+2000+Antwerpen!3b1!8m2!3d51.2157041!4d4.3949267!3m4!1s0x47c3f6f3ac08d273:0x7a492e613a2c2c8b!8m2!3d51.2157041!4d4.3949267" target="_blank">Kloosterstraat 63, 2000 Antwerpen</a> of via hun webshop op <a href="http://www.rewinddesign.be" target="_blank">www.rewinddesign.be</a>. Wij zijn fan van hun speelgoed, kleertjes en decoratiespulletjes. 
+            </p>
+            <p>
+            Ook met een cadeaubon van tweedehands kinderboetiek Happily Ever After zijn we heel blij. Hun winkel vind je in de <a href="https://www.google.be/maps/place/Happily+ever+after/@51.2071816,4.4075269,17z/data=!4m13!1m7!3m6!1s0x47c3f6e3ef6a9a93:0x47f2a791eb7c2ebb!2sMechelsesteenweg+95,+2018+Antwerpen!3b1!8m2!3d51.2071783!4d4.4097209!3m4!1s0x47c3f6e3e5877b3f:0x9cdfde313f8e350b!8m2!3d51.2071048!4d4.4096475" target="_blank">Mechelsesteenweg 95, 2018 Antwerpen</a> (<a href="http://www.happily-ever-after.be" target="_blank">www.happily-ever-after.be</a>). 
+            </p>
+            <p>
+            Ten slotte is ook <a href="http://madamezsazsa.blogspot.be/2014/11/mme-zsazsa-lanceert-hopelijk-een-nieuwe.html" target="_blank">kraamkost</a> altijd welkom.
+            </p>
           </div>
         </div>
 

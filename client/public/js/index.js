@@ -18,35 +18,27 @@ var handleNewBlob = function(blob) {
 function initRecorder() {
   recorder()
   .then((api) => {
-    var record = document.querySelector('.record');
-    var stop = document.querySelector('.stop');
-    var soundClip = document.querySelector('.sound-clip');
+    //var record = document.querySelector('.record');
+    //var stop = document.querySelector('.stop');
 
-    record.onclick = function() {
+    recordVm.record = function() {
       try {
         api.start();
+        recordVm.isRecording(true);
       } catch(e) {
         statusVm.message(e);
       }
-      
-      record.style.background = "#ccc";
-      record.style.color = "black";
-
-      stop.style.background = "red";
-      stop.style.color = "white";
     };
 
-    stop.onclick = function() {
+    recordVm.stop = function() {
       try {
         api.stop();
+        recordVm.isRecording(false);
       } catch(e) {
         statusVm.message(e);
       }
-      
-      record.style.background = "";
-      record.style.color = "";
-      stop.style.background = "";
-      stop.style.color = "";
+
+      recordVm.loading(true);
 
       api.getBlob()
         .then(handleNewBlob)
@@ -55,6 +47,7 @@ function initRecorder() {
           return userVm.firebaseUserRef().update({ songUrl: url, songUploaded: true, songShouldBeDownloaded: true });
         })
         .then(() => {
+          recordVm.loading(false);
           statusVm.message("Uw opname werd succesvol geüpload!");
         })
         .catch(err => {
@@ -90,8 +83,10 @@ var userVm = new UserVm();
 
 var LoginVm = function() {
   this.code = ko.observable();
+  this.loading = ko.observable(false);
   this.login = function() {
     if(!!this.code()) {
+      this.loading(true);
       userVm.name(undefined);
       userVm.card(undefined);
       userVm.firebaseUserRef(undefined);
@@ -104,6 +99,7 @@ var LoginVm = function() {
         .equalTo(this.code())
         .once("value")
         .then(snapshot => {
+          this.loading(false);
           if(!snapshot.val()) {
             return Promise.reject("Invalid login");
           } else {
@@ -129,9 +125,18 @@ var LoginVm = function() {
 } 
 var loginVm = new LoginVm();
 
-var recordVm = {
-  playerVisible: ko.observable(false)
-}
+var RecordVm = function() {
+  this.loading = ko.observable(false);
+  this.playerVisible = ko.observable(false);
+  this.isRecording = ko.observable(false);
+  this.record = function() {
+    statusVm.message("De opnemer is nog niet geladen");
+  }
+  this.stop = function() {
+    statusVm.message("De opnemer is nog niet geladen");
+  }
+}.bind(this);
+var recordVm = new RecordVm();
 
 var PageVm = function(){
   this.initial = ko.observable(true);

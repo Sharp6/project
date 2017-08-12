@@ -46,8 +46,8 @@ div#statusWrapper {
   -webkit-transform: rotate(90deg) scale(0.5) translate(100px, 300px) rotateX(90deg);
           transform: rotate(90deg) scale(0.5) translate(100px, 300px) rotateX(90deg);
 
-  -webkit-transition: all 450ms cubic-bezier(0, 0.6, 0.35, 1.4);
-          transition: all 450ms cubic-bezier(0, 0.6, 0.35, 1.4);
+  -webkit-transition: all 200ms cubic-bezier(0, 0.6, 0.35, 1.4);
+          transition: all 200ms cubic-bezier(0, 0.6, 0.35, 1.4);
 }
 
 div#statusWrapper .icon {
@@ -63,8 +63,8 @@ div#statusWrapper .icon i {
 
   opacity: 0;
 
-  -webkit-transition: all 400ms cubic-bezier(0, 0.6, 0.35, 1.4) 600ms;
-          transition: all 400ms cubic-bezier(0, 0.6, 0.35, 1.4) 600ms;
+  -webkit-transition: all 200ms cubic-bezier(0, 0.6, 0.35, 1.4) 300ms;
+          transition: all 200ms cubic-bezier(0, 0.6, 0.35, 1.4) 300ms;
 }
 
 div#statusWrapper .statusMessage {
@@ -80,8 +80,8 @@ div#statusWrapper .statusMessage {
   border-radius: 0px 4px 4px 0px;
   -webkit-transform: rotateY(90deg);
           transform: rotateY(90deg);
-  -webkit-transition: all 500ms ease-in-out 1000ms;
-          transition: all 500ms ease-in-out 1000ms;
+  -webkit-transition: all 250ms ease-in-out 500ms;
+          transition: all 250ms ease-in-out 500ms;
   -webkit-transform-origin: center left;
           transform-origin: center left;
   opacity: 0;
@@ -165,6 +165,11 @@ div.record {
   margin: 10px 0;
 }
 
+div.record.isRecording {
+  background: #ccc;
+  color: #000;
+}
+
 div.stop {
   padding: 10px 20px;
   border-radius: 3px;
@@ -176,6 +181,11 @@ div.stop {
   cursor: pointer;
   
   margin: 10px 0;
+}
+
+div.stop.isRecording {
+  background: #F00;
+  color: #FFF; 
 }
 
 input[type="text"] {
@@ -309,3 +319,31 @@ div.animate-in {
 }
 
 
+/* LOADER */
+i.loader {
+  -webkit-transform-origin: center center;
+          transform-origin: center center;
+  -webkit-animation: spin 2s linear infinite;
+          animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}

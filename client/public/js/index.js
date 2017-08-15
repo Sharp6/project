@@ -200,7 +200,16 @@ var PageVm = function(){
 }
 var pageVm = new PageVm();
 
+var ImgVm = function(){
+  this.modalImgSrc = ko.observable('');
+  this.modalVisible = ko.computed(() => {
+    return this.modalImgSrc().length > 0;
+  });
+};
+var imgVm = new ImgVm();
+
 ko.applyBindings({
+  imgVm: imgVm,
   loginVm: loginVm,
   userVm: userVm,
   recordVm: recordVm,

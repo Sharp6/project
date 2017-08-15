@@ -2,7 +2,7 @@ html {
   min-height: 100%;
   max-width: 100%;
 
-  overflow: hidden;
+  overflow-x: hidden;
   font-family: 'Raleway', sans-serif;
 }
 
@@ -346,4 +346,157 @@ i.loader {
     -webkit-transform: rotate(360deg);
             transform: rotate(360deg);
   }
+}
+
+
+/* Overlay */
+
+ .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: none;
+}
+.overlay .modal {
+  width: 450px;
+  box-shadow: 0px 23px 30px -20px rgba(0, 0, 0, 0.4);
+}
+.overlay .modal .title {
+  background: #0097A7;
+  color: white;
+  border-radius: 4px 4px 0px 0px;
+  text-align: center;
+  line-height: 48px;
+  font-weight: 700;
+}
+.overlay .modal .body {
+  background: white;
+  border-radius: 0px 0px 4px 4px;
+  line-height: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+}
+.overlay .modal .body .text {
+  padding: 30px;
+}
+.overlay .modal .body .text p {
+  margin-bottom: 20px;
+}
+.overlay .modal .body .img {
+  height: 180px;
+  width: 140px;
+  border-bottom-left-radius: 4px;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  background-size: cover;
+  background-position: center;
+}
+.overlay.is-active {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-animation: overlayAnim 5s ease-in-out forwards;
+          animation: overlayAnim 5s ease-in-out forwards;
+}
+.overlay.is-active .modal {
+  -webkit-animation: modalAnim 5s ease-in-out forwards;
+          animation: modalAnim 5s ease-in-out forwards;
+}
+
+@-webkit-keyframes overlayAnim {
+  0%, 100% {
+    background-color: transparent;
+  }
+  15%, 85% {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+}
+
+@keyframes overlayAnim {
+  0%, 100% {
+    background-color: transparent;
+  }
+  15%, 85% {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* IMG PAGE */
+
+div.imgDiv {
+  overflow: hidden;
+}
+
+div.imgDiv img {
+  max-width: 20%;
+  cursor: pointer;
+  transition: 0.3s;
+  object-fit: cover;
+  font-family: 'object-fit: cover;';
+  height: 150px;
+  width: 150px;
+}
+div.imgDiv img:hover {
+  opacity: 0.7;
+}
+
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 101;
+    left: 0;
+    top: 0;
+    width: 100%;
+    overflow: auto; 
+}
+
+.modal.modalVisible {
+  display: block;
+}
+
+img.modal-content {
+    margin: auto;
+    display: block;
+    width: 100%;
+    /*max-width: 700px;*/
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+    .modal-content {
+        width: 100%;
+    }
 }

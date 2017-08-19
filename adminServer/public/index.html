@@ -7,9 +7,26 @@
       <h3>Card Template</h3>
       <p>Current card: <span data-bind="text:$data"></span> (hash: <span data-bind="text:$root.codeGenerated"></span>)</p>
     </script>
+    <style>
+      #codeDisplay {
+        display: fixed;
+        top: 0;
+        right: 0;
+        background: #ccc;
+        padding: 40px;
+      }
+
+      #codeDisplay span {
+        font-size: 4em;
+      }
+    </style>
   </head>
   <body>
     <div id="container">
+
+      <div id="codeDisplay">
+        Code: <span data-bind="codeGenerated"></span>
+      </div>
 
       <h2>Next steps</h2>
 

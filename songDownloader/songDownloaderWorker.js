@@ -23,7 +23,7 @@ var SongDownloaderWorker = function(sender) {
             return;
         }
         if(!contact.val().card) {
-            console.log("No card information for contact", contact.Naam);
+            console.log("No card information for contact", contact.name);
             return;
         }
         if(!!contact.val().songShouldBeDownloaded) {
@@ -54,7 +54,7 @@ var SongDownloaderWorker = function(sender) {
     function downloadSong(contact) {
         var url = contact.val().songUrl;
         if(!url) {
-            return Promise.reject("No valid URL found for " + contact.val().Naam);
+            return Promise.reject("No valid URL found for " + contact.val().name);
         }
         return download(url, "/home/pi/downloadedFiles");    
     }

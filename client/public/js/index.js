@@ -107,7 +107,7 @@ var LoginVm = function() {
           }
           var fbUser = snapshot.val()[Object.keys(snapshot.val())[0]];
           userVm.card(fbUser.card);
-          userVm.name(fbUser.Naam);
+          userVm.name(fbUser.name);
           userVm.firebaseUserRef(firebase.database().ref('adressen').child(Object.keys(snapshot.val())[0]));
 
           if(!!fbUser.songUrl) {

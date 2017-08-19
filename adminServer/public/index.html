@@ -88,7 +88,7 @@
       var Contact = function(data, firebaseRef) {
         this.firebaseRef = firebaseRef;
 
-        this.name = data.Naam;
+        this.name = data.name;
         this.card = ko.observable(data.card);
         this.code = ko.observable(data.code);
         this.songUploaded = ko.observable(data.songUploaded);
@@ -113,7 +113,7 @@
 
       firebase.database().ref('adressen').on('child_changed', data => {
         // find the contact that has been changed
-        var updatedContact = vm.contacts().find(contact => contact.name === data.val().Naam);
+        var updatedContact = vm.contacts().find(contact => contact.name === data.val().name);
         // update the contact
         if(updatedContact) {
           updatedContact.card(data.val().card);

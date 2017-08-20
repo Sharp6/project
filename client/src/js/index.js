@@ -211,7 +211,8 @@ var ImgVm = function(){
 var imgVm = new ImgVm();
 
 var errorPageVm = {
-  fileUploadLoading: ko.observable(false)
+  fileUploadLoading: ko.observable(false),
+  fileUploadDone: ko.observable(false)
 }
 
 ko.applyBindings({
@@ -235,6 +236,7 @@ fileButton.addEventListener('change', e => {
         })
         .then(() => {
           errorPageVm.fileUploadLoading(false);
+          errorPageVm.fileUploadDone(true);
           statusVm.message("Uw opname werd succesvol geüpload!");
         })
         .catch(err => {

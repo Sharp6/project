@@ -44,15 +44,21 @@
             <p>Er lijkt een probleem te zijn met de webapp. Jammer! Het opnemen van de microfoon via de browser werkt momenteel alleen in <span class="browserSupported">Chrome</span> en <span class="browserSupported">Firefox</span>. <span class="browserNotSupported">Internet Explorer</span>, <span class="browserNotSupported">Edge</span>, en <span class="browserNotSupported">Safari</span> ondersteunen dit jammer genoeg nog niet. Er zijn twee mogelijke remedies:</p>
             <ol>
               <li>Als eerste remedie kan je dus proberen om de Chrome browser te proberen. Als je deze nog niet hebt, kan je hem <a href="https://www.google.nl/chrome/browser/desktop/index.html" target="_blank">hier</a> downloaden. Probeer het dan nog eens.</li>
-              <li>Als tweede remedie kan je een audio-bestand opnemen op je computer zelf. Voor windows start je hiervoor de geluidsrecorder op (instructies <a href="https://support.microsoft.com/en-us/help/14090/windows-sound-recorder-app-faq">hier</a>), voor mac doe je dit via quicktime (instructies <a href="https://support.apple.com/nl-be/HT201066" target="_blank">hier</a>). en upload je het bestand hieronder.</li>
+              <li>Als tweede remedie kan je een audio-bestand opnemen op je computer zelf. Voor windows start je hiervoor de geluidsrecorder op (instructies <a href="https://support.microsoft.com/en-us/help/14090/windows-sound-recorder-app-faq">hier</a>), voor mac doe je dit via quicktime (instructies <a href="https://support.apple.com/nl-be/HT201066" target="_blank">hier</a>). en upload je het bestand hieronder. Klik hiervoor op de knop om een bestand op uw computer te selecteren. Het bastand wordt daarna vanzelf geupload. U krijgt hiervan een melding, en kan daarna gewoon doorgaan door op de knop 'klaar' te klikken.</li>
             </ol>
             <p>
               <input type="file" value="upload" id="fileButton" />
             </p>
-            <span data-bind="visible: errorPageVm.fileUploadLoading"><i class="loader fa fa-spinner" aria-hidden="true"></i></span>
+            <div><span data-bind="visible: errorPageVm.fileUploadLoading"><i class="loader fa fa-spinner" aria-hidden="true"></i></span></div>
+            <div class="actionButton" data-bind="visible:errorPageVm.fileUploadDone">
+                <div data-bind="click:userVm.isReady.bind(null,true)">
+                  Klaar
+                  <span><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                </div>
+              </div>
           </div>
 
-          
+          <!--
           <div class="overlay">
             <div class="modal">
               <div class="title">Windows opname</div>
@@ -64,7 +70,7 @@
               </div>
             </div>
           </div>
-          
+          //-->
 
         </div>
 

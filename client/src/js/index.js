@@ -77,6 +77,7 @@ var UserVm = function() {
   });
   this.card = ko.observable();
   this.name = ko.observable();
+  this.displayName = ko.observable();
   this.firebaseUserRef = ko.observable();
 }
 var userVm = new UserVm();
@@ -97,7 +98,7 @@ var LoginVm = function() {
         .database()
         .ref('adressen')
         .orderByChild("code")
-        .equalTo(this.code())
+        .equalTo(this.code().toLowerCase())
         .once("value")
         .then(snapshot => {
           this.loading(false);
@@ -109,6 +110,8 @@ var LoginVm = function() {
           var fbUser = snapshot.val()[Object.keys(snapshot.val())[0]];
           userVm.card(fbUser.card);
           userVm.name(fbUser.name);
+          var displayName = fbUser.displayName ? fbUser.displayName : fbUser.name;
+          userVm.displayName(displayName);
           userVm.firebaseUserRef(firebase.database().ref('adressen').child(Object.keys(snapshot.val())[0]));
 
           if(!!fbUser.songUrl) {

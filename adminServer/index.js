@@ -16,7 +16,7 @@ io.on('connection', function (socket) {
   socket.emit('message', { system: 'Connected to socket.io server' });
 });
 
-amqp.connect('amqp://192.168.1.129', function(err, conn) {
+amqp.connect('amqp://127.0.0.1', function(err, conn) {
   conn.createChannel(function(err, ch) {
     if(err) {
         return console.log(err);

@@ -2,7 +2,7 @@ var Listener = function(amqp, worker) {
     this.amqp = amqp;
     this.worker = worker;
 
-    this.amqp.connect('amqp://192.168.1.129', (err, conn) => {
+    this.amqp.connect('amqp://127.0.0.1', (err, conn) => {
         if(err) {
             console.log(err);
         }

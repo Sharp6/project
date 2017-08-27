@@ -2,7 +2,7 @@ var sender = function(amqp) {
     this.amqp = amqp;
 
     this.send = function(key, msg) {
-        this.amqp.connect('amqp://192.168.1.129', function(err, conn) {
+        this.amqp.connect('amqp://127.0.0.1', function(err, conn) {
             conn.createChannel(function(err, ch) {
                 var ex = 'jukeboxExchange';
 

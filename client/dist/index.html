@@ -147,22 +147,21 @@
 
         <div id="imgPage" class="page" data-bind="css: { 'animate-out': previousPage() === 'imgPage', 'animate-in': currentPage() === 'imgPage' }">
           <div data-bind="with:$parent.imgVm">
+            <p>
+              <h3>Felix is er!</h3>
+              <ul>
+                <li><i class="fa fa-calendar" aria-hidden="true"></i><span>29 augustus 2017, 10u45</span></li>
+                <li><i class="fa fa-child" aria-hidden="true"></i><span>56,5 cm</span></li>
+                <li><i class="fa fa-balance-scale" aria-hidden="true"></i><span>5,150 kg</span></li>
+              </ul>
+            </p>
             <div class="imgDiv">
-              <img src="img/testImg/IMG_0354.png" data-bind="click:modalImgSrc.bind(undefined,'img/testImg/IMG_0354.png')"/>
-
-              <img src="img/testImg/IMG_0475.png" data-bind="click:modalImgSrc.bind(undefined,'img/testImg/IMG_0475.png')" />
-
-              <img src="img/testImg/IMG_0558.png" data-bind="click:modalImgSrc.bind(undefined,'img/testImg/IMG_0558.png')" />
-
-              <img src="img/testImg/IMG_0598.png" data-bind="click:modalImgSrc.bind(undefined,'img/testImg/IMG_0598.png')" />
-
-              <img src="img/testImg/IMG_0695.png" data-bind="click:modalImgSrc.bind(undefined,'img/testImg/IMG_0695.png')" />
- 
-              <img src="img/testImg/IMG_0723.png" data-bind="click:modalImgSrc.bind(undefined,'img/testImg/IMG_0723.png')" />
-
-              <img src="img/testImg/IMG_0749.png" data-bind="click:modalImgSrc.bind(undefined,'img/testImg/IMG_0749.png')" />
-
-              <img src="img/testImg/IMG_4573.png" data-bind="click:modalImgSrc.bind(undefined,'img/testImg/IMG_4573.png')" />
+              <img src="img/IMG_1618.png" data-bind="click:modalImgSrc.bind(undefined,'img/IMG_1618.png')"/>
+              <img src="img/IMG_1622.png" data-bind="click:modalImgSrc.bind(undefined,'img/IMG_1622.png')"/>
+              <img src="img/IMG_1628.png" data-bind="click:modalImgSrc.bind(undefined,'img/IMG_1628.png')"/>
+              <img src="img/IMG_6068.png" data-bind="click:modalImgSrc.bind(undefined,'img/IMG_6068.png')"/>
+              <img src="img/IMG_6105.png" data-bind="click:modalImgSrc.bind(undefined,'img/IMG_6105.png')"/>
+              <img src="img/IMG_6107.png" data-bind="click:modalImgSrc.bind(undefined,'img/IMG_6107.png')"/>
             </div>
 
             <div class="modal" data-bind="css: { modalVisible: modalVisible  } ">

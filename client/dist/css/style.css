@@ -504,3 +504,12 @@ img.modal-content {
         width: 100%;
     }
 }
+
+/* IMG PAGE ADDITIONS */
+#imgPage ul {
+  list-style-type: none;
+}
+
+#imgPage i.fa {
+  margin-right: 1em;
+}

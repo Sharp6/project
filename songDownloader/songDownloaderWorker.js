@@ -67,7 +67,7 @@ var SongDownloaderWorker = function(sender) {
         return new Promise((resolve,reject) => {
             fs.stat(filepath, (err, stats) => {
                 if(!err) { // file exists, let's copy it to the backup
-                    console.log("Renaming file", "/home/pi/downloadedFiles/" + contact.val().card);
+                    console.log("Renaming file", filepath);
                     fs.rename(filepath, filepath + "_" + Date.now().toString(), (err) => {
                         if(err) {
                             reject(err);

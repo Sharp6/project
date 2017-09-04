@@ -14,6 +14,7 @@ var storageRef = storage.ref();
 
 var firebaseSave = function(file, name) {
   console.log("Writing to FB with name", name);
+  // TODO: add timestamp
   var ref = storageRef.child(name.toString()); // This will normally be a string, but firebase complains if only numbers are provided
   return ref.put(file)
     .then(function(snapshot) {

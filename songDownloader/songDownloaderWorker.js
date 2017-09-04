@@ -1,6 +1,6 @@
 var admin = require("firebase-admin");
 //var path = require('path');
-//var fs = require('fs');
+var fs = require('fs');
 var download = require('download');
 var serviceAccount = require(__dirname + "/dirkje-88fea-firebase-adminsdk-blp93-126124d325.json");
 
@@ -52,11 +52,34 @@ var SongDownloaderWorker = function(sender) {
     }.bind(this);
 
     function downloadSong(contact) {
-        var url = contact.val().songUrl;
-        if(!url) {
-            return Promise.reject("No valid URL found for " + contact.val().name);
-        }
-        return download(url, "/home/pi/downloadedFiles");    
+        // check if file exists already
+        return backupExistingFile("/home/pi/downloadedFiles/" + contact.val().card)
+            .then(() => {
+                var url = contact.val().songUrl;
+                if(!url) {
+                    return Promise.reject("No valid URL found for " + contact.val().name);
+                }
+                return download(url, "/home/pi/downloadedFiles");
+            });
+    }
+
+    function backupExistingFile(filepath) {
+        return new Promise((resolve,reject) => {
+            fs.stat(filepath, (err, stats) => {
+                if(!err) { // file exists, let's copy it to the backup
+                    console.log("Renaming file", "/home/pi/downloadedFiles/" + contact.val().card);
+                    fs.rename(filepath, filepath + "_" + Date.now().toString(), (err) => {
+                        if(err) {
+                            reject(err);
+                        } else {
+                            resolve();
+                        }
+                    });    
+                } else { // file does not exist
+                    resolve();
+                }
+            });
+        });
     }
 
     ref.on("child_added", handleRemoteFile);

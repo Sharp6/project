@@ -30,5 +30,5 @@ class LedNotifierRabbitListener:
         
 
 if __name__ == '__main__':
-    print("Running mopidyAgent rabbitlistener standalone")
-    marl = MopidyAgentRabbitListener()
+    print("Running ledNotifier rabbitlistener standalone")
+    lnrl = LedNotifierRabbitListener()

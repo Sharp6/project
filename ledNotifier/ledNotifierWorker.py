@@ -12,9 +12,6 @@ class LedNotifierWorker:
         # The ready LED can be set high as soon as the program starts, and can stay that way
         GPIO.output(13,True)
 
-        while True:
-            # SLEEP
-
     def cardLedOn(self):
         GPIO.output(12,True)
 

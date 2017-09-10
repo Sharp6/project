@@ -19,6 +19,14 @@ var SongPlayerWorker = function() {
                     console.log('stderr ', stderr);
                 });
             });
+        } else if(song && song === "empty") {
+            exec('pkill aplay', (e, stdout, stderr) => {
+                if (e instanceof Error) {
+                    console.error(e);
+                }
+                console.log('stdout ', stdout);
+                console.log('stderr ', stderr);
+            });
         }
     }
 

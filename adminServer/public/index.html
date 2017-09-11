@@ -45,11 +45,12 @@
       </div>
 
       <div id="contactsDiv">
-        <p>Filter contacts: <input type="checkbox" data-bind="checked: contactFilter" /></p>
+        <p>Show contacts without card <input type="checkbox" data-bind="checked: contactFilter" /></p>
+        <p>Show contacts with uploaded song <input type="checkbox" data-bind="checked: uploadedFilter" /></p>
         <p>Search query: <input type="text" data-bind="value:searchQuery" /></p>
         <ul data-bind="foreach:searchedContacts">
           <li>
-            <span data-bind="text:name"></span> - <span data-bind="text:card"></span> - <span data-bind="text:hasCardAssigned"></span>
+            <span data-bind="text:name"></span> - <span data-bind="text:card"></span> - <span data-bind="text:songUploaded"></span>
             <button data-bind="click:assignCard, enable:$parent.cardIsAssignable">Assign card</button>
           </li>
         </ul>
@@ -78,6 +79,7 @@
         cardRead: ko.observable('empty'),
         codeGenerated: ko.observable(''),
         contactFilter: ko.observable(false),
+        uploadedFilter: ko.observable(false),
         searchQuery: ko.observable('')
       };
 
@@ -86,7 +88,9 @@
       });
 
       vm.displayedContacts = ko.computed(() => {
-        return vm.contactFilter() ? vm.contactsWithoutCard() : vm.contacts();
+        var contactsToDisplay1 = vm.contactFilter() ? vm.contactsWithoutCard() : vm.contacts();
+        var contactsToDisplay2 = vm.uploadedFilter() ? contactsToDisplay1.filter(contact => contact.songUploaded()) : contactsToDisplay1;
+        return contactsToDisplay2;
       });
 
       vm.searchedContacts = ko.computed(() => {

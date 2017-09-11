@@ -29,11 +29,6 @@
         <span data-bind="text:codeGenerated"></span>
       </div>
 
-      <h2>Next steps</h2>
-
-      <ul>
-        <li>Save card assignments (and hash) to firebase</li>
-      </ul>
       <h1>Card Config</h1>
 
       <div id="cardDiv">
@@ -48,12 +43,22 @@
         <p>Show contacts without card <input type="checkbox" data-bind="checked: contactFilter" /></p>
         <p>Show contacts with uploaded song <input type="checkbox" data-bind="checked: uploadedFilter" /></p>
         <p>Search query: <input type="text" data-bind="value:searchQuery" /></p>
-        <ul data-bind="foreach:searchedContacts">
-          <li>
-            <span data-bind="text:name"></span> - <span data-bind="text:card"></span> - <span data-bind="text:songUploaded"></span>
-            <button data-bind="click:assignCard, enable:$parent.cardIsAssignable">Assign card</button>
-          </li>
-        </ul>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Naam</th>
+              <th>Kaart</th>
+              <th>Assign</th>
+            </tr>
+          </thead>
+          <tbody data-bind="foreach:searchedContacts">
+            <tr data-bind="css: { 'table-success': songUploaded }">
+              <td data-bind="text:name"></td>
+              <td data-bind="text:card"></td>
+              <td><button data-bind="click:assignCard, enable:$parent.cardIsAssignable">Assign card</button></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
